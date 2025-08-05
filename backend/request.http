@@ -1,0 +1,72 @@
+// Index Route
+GET http://localhost:3000
+
+###
+
+// Register User
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "uId": "alicasdbqwkdasdasd",
+    "username": "asdasd",
+    "email": "asasdasd2132@gmail.com",
+    "password": "asdjqowdoasjiodasd"
+}
+
+###
+
+// Display all User
+GET http://localhost:3000/users
+
+
+###
+
+// Login User
+PATCH http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "uId": "4AmbAve6pYdiRlSlOqlYtORM1gw1",
+    "username": "christianAlicab1a",
+    "email": "v.rajiemae.villa@gmail.com",
+    "password": "december72002",
+    "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk1MWRkZTkzMmViYWNkODhhZmIwMDM3YmZlZDhmNjJiMDdmMDg2NmIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdGFzay1tYXN0ZXItNDA5NjEiLCJhdWQiOiJ0YXNrLW1hc3Rlci00MDk2MSIsImF1dGhfdGltZSI6MTc1NDA5MTI3OCwidXNlcl9pZCI6IjRBbWJBdmU2cFlkaVJsU2xPcWxZdE9STTFndzEiLCJzdWIiOiI0QW1iQXZlNnBZZGlSbFNsT3FsWXRPUk0xZ3cxIiwiaWF0IjoxNzU0MDkxMjc4LCJleHAiOjE3NTQwOTQ4NzgsImVtYWlsIjoidi5yYWppZW1hZS52aWxsYUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidi5yYWppZW1hZS52aWxsYUBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.ozu6I9mtGvQfFRwleVtjj6nr5ijd1g1V4yqfFIT6Y14n1U7NOF2lA0Mqsp7bvGa_4J0i2PL7CZz4kB_aEAm58HCiG3cEPELiOXLt9dR1HqEY2ptMi0A1FMzxR6q35C5iB-6zc5Si6chMjZwAjFe72v1b4i5AAJ34qSxO42RTl4C9gUuQKWF9HKnGc5qEDqyFin2fUrEy-hPfzpkFLDMoUJLTemQTlRL3myU-au8rXMwv_w6OrMr1aLamI55n2koUTUE0aC7OitGuYeFC8OKoDCxz4RUjfjsugoCOmyR4LMIUTk9nr79aposh8HPGAm9asu_ZKjnfohwO_V_CsaJlsA"
+}
+
+###
+
+GET http://localhost:3000/tasks
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk1MWRkZTkzMmViYWNkODhhZmIwMDM3YmZlZDhmNjJiMDdmMDg2NmIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQ2hyaXN0aWFuZGF2ZSBhbGljYWJhIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0x6WFgtdnFiM2hhRmtQR2oyM0otbXQ0ODEwamJKZEpUcXYyRXY3MWRDc0dkSzdEMWc9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdGFzay1tYXN0ZXItNDA5NjEiLCJhdWQiOiJ0YXNrLW1hc3Rlci00MDk2MSIsImF1dGhfdGltZSI6MTc1NDM5NTc1MCwidXNlcl9pZCI6IjY1VHhHNXVvTjVSc0RROWVncXV5YlpWZWI2NzMiLCJzdWIiOiI2NVR4RzV1b041UnNEUTllZ3F1eWJaVmViNjczIiwiaWF0IjoxNzU0Mzk1NzUwLCJleHAiOjE3NTQzOTkzNTAsImVtYWlsIjoiY2hyaXN0aWFuZGF2ZTEyMDcwMkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwMDExNTcyMDQxOTQyNTk4MjY3OCJdLCJlbWFpbCI6WyJjaHJpc3RpYW5kYXZlMTIwNzAyQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.FDT3xRWzj1KMramTocVttUA2_D3gcbzQm0-VXEDp4gGxwIWZ9VY01gE07FT7qfB4WQhHluuNVhXNGW_2H0uWiVrMN_NWPV1-AtczVZoyo4SylSwKTb5q0FsU2RuxVjteM6sYzdLl4xPKINlAWcnxHVfkcevnlW1u8BpXNfGGRroi8Wh1xHLT-UwP_k7hCfkWhRJ6fvboL7MQ-aNkUB2Yb2JOsEukf2gvU8jy1_3QKwiuY6-Eb8rXEevKGunaNORk_Qv1NeziBFupCWO5mwOSu1Z-BYzZtU9086j1Irbz-P15AdTY0bEwjONDoD95lCdiTDP4BBuapUl8nZusOa-gIg
+###
+
+POST http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+    "user_id": "7TFm4yeu8UQA9Xw9FDC1G0CPqr83",
+    "title": "task 1",
+    "description": "description 1",
+    "priority_level": "High",
+    "status": "To-Do"
+}
+
+###
+
+
+GET http://localhost:3000/tasks/EUHcolSfbvah
+
+###
+
+PATCH http://localhost:3000/tasks/EUHcolSfbvah
+Content-Type: application/json
+
+{
+    "id": "EUHcolSfbvah",
+    "user_id": "65TxG5uoN5RsDQ9egquybZVeb673",
+    "title": "Learn Hono.js",
+    "description": "Christian Alicaba",
+    "priority_level": "Low",
+    "status": "Done"
+}
+

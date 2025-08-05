@@ -1,0 +1,159 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.add-container {
+  position: absolute;
+  margin: 1rem 0 0 30rem;
+  z-index: 3;
+  animation: floats 1s ease-in-out;
+}
+.add-icon {
+  font-size: 1.5rem;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.edit-container{
+  position: relative;
+  top: -1.6rem;
+  display: flex;
+  justify-content: flex-end;
+  visibility: hidden;
+}
+.edit-icon{
+  color: white;
+  font-size: 1.2rem;
+}
+
+.dashboard {
+  background-color: rgb(18, 18, 18);
+  height: 91.6vh;
+  width: 84.2%;
+  margin: 0 0 0 14rem;
+  padding: 2.4rem;
+}
+
+.header-title {
+  margin: 0 0 1.5rem 0;
+  color: white;
+  animation: floats 1s ease-in-out;
+}
+.header-paragraph {
+  margin: -1rem 0 3rem 0;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.547);
+  animation: floats 1s ease-in-out;
+}
+
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .columns {
+    flex-direction: row;
+  }
+}
+
+.column {
+  border-radius: 12px;
+  padding: 1rem;
+  flex: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  height: 71vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  background-color: rgb(44, 44, 44);
+  animation: floats 1s ease-in-out;
+  opacity: 1;
+}
+
+@keyframes floats {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}
+
+.column-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding-top: 0.9rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #00000018;
+  background-color: rgb(44, 44, 44);
+  position: sticky;
+  top: -1rem;
+  z-index: 2;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.task-card {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem 1rem;
+  height: 7vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-radius: 8px;
+  border: 1px solid #5a5a5a7e;
+  transition: box-shadow 0.2s ease;
+  font-weight: 500;
+  color: #333;
+  z-index: 1;
+  position: relative;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+.task-card:hover{
+  background-color: rgb(58, 58, 58);
+}
+.task-card:hover .edit-container {
+  visibility: visible;
+
+}
+
+.task-card label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: -1rem;
+}
+
+.task-card p {
+  padding-top: 1.2rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.396);
+  font-weight: bold;
+}
+
+.no-tasks {
+  padding-top: 15rem;
+  text-align: center;
+  font-style: italic;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.priority-level {
+  position: absolute;
+  top: -0.01rem;
+  left: -0.1rem;
+}
+
+.priority-level label {
+  font-size: 0.75rem;
+  color: white;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  display: inline-block;
+}
