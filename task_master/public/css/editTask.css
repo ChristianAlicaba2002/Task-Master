@@ -1,0 +1,133 @@
+.task-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.621);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.task-container {
+  width: 500px;
+  background-color: rgb(44, 44, 44);
+  padding: 2rem 3rem 2rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2rem;
+}
+.edit-task-container{
+     display: flex;
+  flex-direction: row;
+}
+
+.plus-icon {
+  font-size: 1.8rem;
+  margin: 0 0.6rem 0 0;
+  color: white;
+}
+
+.close-icon {
+  font-size: 1.3rem;
+  color: white;
+  transform: rotate(45deg);
+  margin: -1rem 0 0 0;
+  cursor: pointer;
+}
+
+.header-container h1 {
+  font-size: 1.8rem;
+  color: white;
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  display: block;
+  color: rgba(255, 255, 255, 0.822);
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #5a5a5a7e;
+  font-size: 1rem;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.498);
+}
+input:hover,
+textarea:hover,
+select:hover {
+  background-color: rgba(185, 185, 185, 0.087);
+  border: 1px solid rgba(255, 255, 255, 0.549);
+}
+input:focus,
+textarea:focus{
+  outline: none;
+  border-color: #ff7a00;
+  background-color: transparent;
+}
+select:focus{
+  outline: none;
+  border-color: #ff7a00;
+  color: black;
+  background-color: transparent;
+}
+button {
+  padding: 0.8rem 1.2rem;
+  background-color: #ff7a00;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #e86b00;
+}
+
+.selection-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.selection-group .form-group.half {
+  flex: 1;
+}
+
+@media (max-width: 520px) {
+  .selection-group {
+    flex-direction: column;
+  }
+}
