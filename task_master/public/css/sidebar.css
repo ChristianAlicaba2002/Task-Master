@@ -33,11 +33,10 @@
   text-align: left;
   transition: background-color 0.2s ease;
   text-decoration: none;
-  color: black;
 }
 
 .sidebar-button:hover {
-  background-color: #e2e2e2;
+  background-color: #e2e2e23f;
 }
 
 .logout {
