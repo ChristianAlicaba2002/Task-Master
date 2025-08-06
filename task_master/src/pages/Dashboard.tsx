@@ -15,6 +15,7 @@ const statuses = ["To-Do", "In Progress", "Done"];
 
 export default function Dashboard() {
   const auth = getAuth();
+  const [showAlert, setShowAlert] = useState<boolean>(false);
   const [isAddTaskOpen, setIsTaskOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
@@ -28,8 +29,14 @@ export default function Dashboard() {
     if (user) {
       setName(user.displayName);
     }
-  }, [auth]); // Removed invalid dependency
+  }, [auth]);
 
+  function showCustomAlert() {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
+  }
   // Load tasks from localStorage
   const raw = localStorage.getItem("item");
   useEffect(() => {
@@ -84,10 +91,54 @@ export default function Dashboard() {
     displayTaskUser();
   }, []);
 
+
+  // Update the Task in the list of localstorage
+  const updateTaskInList = (updatedTask: TTask) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+    );
+
+    const newList = tasks.map((task) =>
+      task.id === updatedTask.id ? updatedTask : task
+    );
+    localStorage.setItem("item", JSON.stringify(newList));
+  };
+
+  // Delete Specific Tasks
+  const deleteSpecificTask = async (id: string) => {
+    try {
+      showCustomAlert()
+
+      const response = await fetch(`http://localhost:3000/task/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error deleting task:", errorData.message || errorData.error);
+        return;
+      }
+
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      const updatedTasks = tasks.filter((task) => task.id !== id);
+      localStorage.setItem("item", JSON.stringify(updatedTasks));
+    } catch (err) {
+      console.error("Failed to delete task:", err);
+    }
+  };
+
   return (
     <>
       <Sidebar />
       <div className="dashboard">
+        {showAlert && (
+          <div className={`alert-delete ${showAlert ? "show" : ""}`}>
+            <p>Task deleted successfully!</p>
+          </div>
+        )}
         <h1 className="header-title">{name} Dashboard</h1>
         <p className="header-paragraph">
           The Task Master List Dashboard is a task management interface that helps users organize and track their work efficiently. Tasks are categorized into three main statuses: To-Do, In Progress, and Done, providing a clear overview of current progress.
@@ -131,7 +182,7 @@ export default function Dashboard() {
                                 }}
                               />
                               <div className="delete-icon">
-                                <FaTrash />
+                                <FaTrash onClick={() => deleteSpecificTask(task.id)} />
                               </div>
                             </div>
                           </>
@@ -167,7 +218,7 @@ export default function Dashboard() {
             </div>
           ))}
           {isEditOpen && editTaskId ? (
-            <EditTask item_id={editTaskId} />
+            <EditTask item_id={editTaskId} onTaskUpdate={updateTaskInList} />
           ) : ""}
         </div>
       </div>
