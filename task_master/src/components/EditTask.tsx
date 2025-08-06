@@ -80,7 +80,7 @@ export default function EditTask({ item_id }: TID) {
         };
 
         try {
-            const response = await fetch(`http://localhost:3000/tasks/${item_id}`, {
+            const response = await fetch(`http://localhost:3000/task/${item_id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
