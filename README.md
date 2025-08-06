@@ -18,4 +18,5 @@ Database: Postgresql Neon and Drizzle-kit with zod
 ```
 bun add
 bun run dev
+cp .env.example .env
 ```
