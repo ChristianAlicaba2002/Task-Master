@@ -8,9 +8,10 @@ import "../../public/css/editTask.css";
 
 type TID = {
     item_id: string;
+    onTaskUpdate: (updatedTask: TTask) => void;
 };
 
-export default function EditTask({ item_id }: TID) {
+export default function EditTask({ item_id , onTaskUpdate }: TID) {
     const [isEditOpen, setIsEditOpen] = useState<boolean>(true);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [editTaskForm, setEditTaskForm] = useState<TEditTask>({
@@ -61,7 +62,6 @@ export default function EditTask({ item_id }: TID) {
         }, 3000);
     }
 
-
     // Update the Task edited
     const updateTaskForm = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -73,7 +73,7 @@ export default function EditTask({ item_id }: TID) {
             return;
         }
 
-        const updatedTask = {
+        const updatedTask: TTask = {
             id: item_id,
             user_id: user.uid,
             ...editTaskForm,
@@ -89,13 +89,16 @@ export default function EditTask({ item_id }: TID) {
             });
 
             if (!response.ok) throw new Error("Failed to update task");
+
+            onTaskUpdate(updatedTask);
+
             setIsEditOpen(false);
-            window.location.reload()
         } catch (error) {
             console.error(error);
             alert("Failed to update task.");
         }
     };
+
 
     return (
         <>
