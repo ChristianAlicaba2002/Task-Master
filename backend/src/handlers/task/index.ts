@@ -4,14 +4,12 @@ import {
   tasks,
   taskSelectSchema,
   users,
-  userSelectSchema,
 } from "../../db/schema";
 import { db } from "../../db";
 import * as http_status_code from "../../http-status/http-status-codes";
 import { eq } from "drizzle-orm";
-import { json } from "drizzle-orm/gel-core";
 
-// Get All User Tasks
+// Get User Specific Tasks Handler
 export const allTaskHandler = async (c: Context) => {
   try {
     const token = c.req.header("Authorization")?.split("Bearer ")[1];
@@ -61,7 +59,7 @@ export const allTaskHandler = async (c: Context) => {
   }
 };
 
-// Create user tasks
+// Create User Tasks Handler
 export const createTaskHandler = async (c: Context) => {
   try {
     const payload = await c.req.json();
@@ -113,6 +111,7 @@ export const createTaskHandler = async (c: Context) => {
   }
 };
 
+// Display User Specific Tasks Handler
 export const getTaskHandler = async (c: Context) => {
   const id = c.req.param("id");
 
@@ -128,6 +127,8 @@ export const getTaskHandler = async (c: Context) => {
   );
 };
 
+
+// Update User Specific Tasks Handler
 export const updateTaskHandler = async (c: Context) => {
   const id = c.req.param("id");
   const body = await c.req.json();
@@ -165,4 +166,19 @@ export const updateTaskHandler = async (c: Context) => {
     { message: "Update task successfully", data: updateItem },
     http_status_code.OK
   );
+};
+
+// Delete User Specific Tasks Handler
+export const deleteTaskHandler = async (c: Context) => {
+  const id = c.req.param("id");
+
+  const findTask = await db.select().from(tasks).where(eq(tasks.id, id));
+
+  if (findTask.length === 0) {
+    return c.json({ message: "Task not found" }, http_status_code.NOT_FOUND);
+  }
+
+  await db.delete(tasks).where(eq(tasks.id, id));
+
+  return c.json({ message: "Task deleted successfully" }, http_status_code.OK);
 };
