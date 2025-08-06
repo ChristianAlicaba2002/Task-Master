@@ -15,8 +15,10 @@ Database: Postgresql Neon and Drizzle-kit with zod
 
 # Installation
 
-```
-bun add
-bun run dev
-cp .env.example .env
-```
+## Backend folder
+
+You can find the command how to install the dependencies and to run in the Makefile
+
+## Task_Master
+
+You can find the command how to install the dependencies and to run in the Makefile 
