@@ -37,14 +37,21 @@ body {
   flex-direction: row;
   padding: 0.3rem 0.5rem;
   gap: 1rem;
+  animation: floats 0.2s ease-in-out;
 }
 .edit-icon {
-  color: white;
+  color: rgb(218, 218, 218);
   font-size: 1.1rem;
+}
+.edit-icon:hover {
+  color: rgb(255, 255, 255);
 }
 .delete-icon {
   color: red;
   font-size: 0.9rem;
+}
+.delete-icon:hover {
+  color: rgb(255, 78, 78);
 }
 
 .dashboard {
