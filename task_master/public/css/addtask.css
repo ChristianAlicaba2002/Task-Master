@@ -93,18 +93,18 @@ select:hover {
 input:focus,
 textarea:focus {
   outline: none;
-  border-color: #ff7a00;
+  background-color: rgb(44, 44, 44);
   background-color: transparent;
 }
 select:focus {
   outline: none;
-  border-color: #ff7a00;
+  background-color: rgb(44, 44, 44);
   color: black;
   background-color: transparent;
 }
 button {
   padding: 0.8rem 1.2rem;
-  background-color: #ff7a00;
+  background-color: rgb(44, 44, 44);
   border: none;
   color: white;
   font-weight: bold;
@@ -114,7 +114,7 @@ button {
 }
 
 button:hover {
-  background-color: #e86b00;
+  background-color: rgb(44, 44, 44);
 }
 
 .selection-group {
@@ -131,4 +131,19 @@ button:hover {
   .selection-group {
     flex-direction: column;
   }
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.loader {
+  width: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid lightblue;
+  border-right-color: rgb(0, 13, 255);
+  animation: l2 1s infinite linear;
 }
