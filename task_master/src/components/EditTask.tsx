@@ -12,6 +12,7 @@ type TID = {
 
 export default function EditTask({ item_id }: TID) {
     const [isEditOpen, setIsEditOpen] = useState<boolean>(true);
+    const [showAlert, setShowAlert] = useState<boolean>(false);
     const [editTaskForm, setEditTaskForm] = useState<TEditTask>({
         title: "",
         description: "",
@@ -53,10 +54,18 @@ export default function EditTask({ item_id }: TID) {
         getTaskData();
     }, [item_id]);
 
+    function showCustomAlert() {
+        setShowAlert(true);
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 3000);
+    }
+
 
     // Update the Task edited
     const updateTaskForm = async (e: React.FormEvent) => {
         e.preventDefault();
+        showCustomAlert();
 
         const user = auth.currentUser;
         if (!user) {
@@ -80,7 +89,6 @@ export default function EditTask({ item_id }: TID) {
             });
 
             if (!response.ok) throw new Error("Failed to update task");
-            alert("Task updated successfully!");
             setIsEditOpen(false);
             window.location.reload()
         } catch (error) {
@@ -93,6 +101,12 @@ export default function EditTask({ item_id }: TID) {
         <>
             {isEditOpen && (
                 <div className="task-overlay">
+                    {showAlert && (
+                        <div className={`alert ${showAlert ? "show" : ""}`}>
+                            <p>Task updated successfully!</p>
+                        </div>
+                    )}
+
                     <div className="task-container">
                         <div className="header-container">
                             <div className="edit-task-container">

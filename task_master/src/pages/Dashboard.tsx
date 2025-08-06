@@ -1,6 +1,8 @@
 import Sidebar from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
+import { FaTrash } from "react-icons/fa";
+import { IoIosMore } from "react-icons/io";
 import '../../public/css/dashboard.css';
 import AddTask from "../components/AddTask";
 import EditTask from "../components/EditTask";
@@ -14,6 +16,7 @@ const statuses = ["To-Do", "In Progress", "Done"];
 export default function Dashboard() {
   const auth = getAuth();
   const [isAddTaskOpen, setIsTaskOpen] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [editTaskId, setEditTaskId] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
@@ -115,14 +118,25 @@ export default function Dashboard() {
                 <>
                   {tasks.filter((task) => task.status === status).map((task) => (
                     <div key={task.id ?? task.user_id ?? Math.random()} className="task-card">
-                      <div className="edit-container">
-                        <CiEdit
-                          className="edit-icon"
-                          onClick={() => {
-                            setEditTaskId(task.id);
-                            setIsEditOpen((prev) => !prev);
-                          }}
-                        />
+                      <div className="more-container">
+                        <IoIosMore className="more-icon" onClick={() => setIsMenuOpen((prev) => !prev)} />
+                        {isMenuOpen && (
+                          <>
+                            <div className="action-container">
+                              <CiEdit
+                                className="edit-icon"
+                                onClick={() => {
+                                  setEditTaskId(task.id);
+                                  setIsEditOpen((prev) => !prev);
+                                }}
+                              />
+                              <div className="delete-icon">
+                                <FaTrash />
+                              </div>
+                            </div>
+                          </>
+                        )}
+
                       </div>
                       <label>{task.title}</label>
                       <p>{task.description}</p>
