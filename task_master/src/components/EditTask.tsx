@@ -11,8 +11,9 @@ type TID = {
     onTaskUpdate: (updatedTask: TTask) => void;
 };
 
-export default function EditTask({ item_id , onTaskUpdate }: TID) {
+export default function EditTask({ item_id, onTaskUpdate }: TID) {
     const [isEditOpen, setIsEditOpen] = useState<boolean>(true);
+    const [submitTask, setSubmitTask] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [editTaskForm, setEditTaskForm] = useState<TEditTask>({
         title: "",
@@ -66,10 +67,12 @@ export default function EditTask({ item_id , onTaskUpdate }: TID) {
     const updateTaskForm = async (e: React.FormEvent) => {
         e.preventDefault();
         showCustomAlert();
+        setSubmitTask(true);
 
         const user = auth.currentUser;
         if (!user) {
             alert("You must be logged in to update a task.");
+            setSubmitTask(false);
             return;
         }
 
@@ -96,6 +99,8 @@ export default function EditTask({ item_id , onTaskUpdate }: TID) {
         } catch (error) {
             console.error(error);
             alert("Failed to update task.");
+        } finally {
+            setSubmitTask(false)
         }
     };
 
@@ -174,8 +179,12 @@ export default function EditTask({ item_id , onTaskUpdate }: TID) {
                                     </select>
                                 </div>
                             </div>
-
-                            <button type="submit">Update Task</button>
+                            {submitTask ? (<button type="submit" disabled={submitTask}>
+                                <div className="loader-container">
+                                    <div className="loader"></div>
+                                </div>
+                            </button>) : <button type="submit">Update Task</button>
+                            }
                         </form>
                     </div>
                 </div>
