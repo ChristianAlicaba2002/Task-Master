@@ -4,10 +4,12 @@ import {
   createTaskHandler,
   getTaskHandler,
   updateTaskHandler,
+  deleteTaskHandler
 } from ".";
 
 export const taskRoutes = new Hono()
   .get("/tasks", allTaskHandler)
+  .post("/tasks", createTaskHandler)
   .get("/task/:id", getTaskHandler)
-  .patch("/tasks/:id", updateTaskHandler)
-  .post("/tasks", createTaskHandler);
+  .patch("/task/:id", updateTaskHandler)
+  .delete("/task/:id", deleteTaskHandler)
