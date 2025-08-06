@@ -38,9 +38,9 @@ export default function Dashboard() {
     }, 3000);
   }
   // Load tasks from localStorage
-  const raw = localStorage.getItem("item");
   useEffect(() => {
     try {
+      const raw = localStorage.getItem("item");
       const items = JSON.parse(raw || "[]");
 
       if (Array.isArray(items)) {
@@ -53,7 +53,7 @@ export default function Dashboard() {
       console.error("Failed to parse localStorage item:", e);
       setTasks([]);
     }
-  }, [raw]);
+  }, []);
 
   // Fetch tasks from API REQUEST
   const displayTaskUser = async () => {
@@ -62,7 +62,7 @@ export default function Dashboard() {
         method: "GET",
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
+        }
       });
 
       const data = await response.json();

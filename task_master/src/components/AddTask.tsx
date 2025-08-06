@@ -8,6 +8,7 @@ import "../../public/css/addtask.css";
 export default function AddTask() {
 
     const [showTitleError, setShowTitleError] = useState<string>("")
+    const [submitTask, setSubmitTask] = useState<boolean>(false)
     const [isAddTaskOpen, setIsTaskOpen] = useState<boolean>(true);
     const [showDescriptionError, setShowDescriptionError] = useState<string>("")
     const [showPriorityLevelError, setShowPriorityLevelError] = useState<string>("")
@@ -23,7 +24,7 @@ export default function AddTask() {
     // Handle Change Input, Select, TextArea
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        setAddTaskForm((prev) => ({ ...prev, [name]: value}))
+        setAddTaskForm((prev) => ({ ...prev, [name]: value }))
 
         if (name === "title") setShowTitleError("")
         if (name === "description") setShowDescriptionError("")
@@ -33,47 +34,59 @@ export default function AddTask() {
 
     const submitNewTask = async (e: React.FormEvent) => {
         e.preventDefault()
+        setSubmitTask(true)
 
         if (!addTaskForm.title && !addTaskForm.description && !addTaskForm.priority_level && !addTaskForm.status) {
             setShowTitleError("Title is required")
             setShowDescriptionError("Description is required")
             setShowPriorityLevelError("Priority level required")
             setShowStatusError("Status is required")
+            setSubmitTask(false)
             return;
         }
         if (!addTaskForm.description) {
             setShowDescriptionError("Description is required")
+            setSubmitTask(false)
             return;
         }
         if (!addTaskForm.priority_level) {
             setShowPriorityLevelError("Priority level required")
+            setSubmitTask(false)
             return;
         }
 
         if (!addTaskForm.status) {
             setShowStatusError("Status is required")
+            setSubmitTask(false)
             return;
         }
 
-        const user = auth.currentUser;
-        if (user) {
-            const submitTask = {
-                ...addTaskForm,
-                user_id: user.uid
-            };
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                const submitTask = {
+                    ...addTaskForm,
+                    user_id: user.uid
+                };
 
-            const response = await fetch("http://localhost:3000/tasks", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(submitTask)
-            });
+                const response = await fetch("http://localhost:3000/tasks", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(submitTask)
+                });
 
-            const data = await response.json();
-            if (data) console.log(data);
+                const data = await response.json();
+                if (data) console.log(data);
 
-            window.location.reload();
+                window.location.reload();
+            }
+
+        } catch (error) {
+            console.log(error as string)
+        } finally {
+            setSubmitTask(false)
         }
 
     }
@@ -165,8 +178,13 @@ export default function AddTask() {
                                 )}
                             </div>
                         </div>
-
-                        <button type="submit">Add Task</button>
+                        {submitTask ? (
+                            <button type="submit" disabled={submitTask}>
+                                <div className="loader-container">
+                                    <div className="loader"></div>
+                                </div>
+                            </button>
+                        ) : <button type="submit">Add Task</button>}
                     </form>
                 </div>
             </div>
