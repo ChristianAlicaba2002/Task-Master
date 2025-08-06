@@ -184,3 +184,27 @@ body {
   border-radius: 3px;
   display: inline-block;
 }
+
+/* New Custom Alert Styles */
+.alert-delete {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  background-color: red;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.alert-delete.show {
+  opacity: 1;
+  transform: translateY(0);
+}
