@@ -14,12 +14,13 @@ Database: Postgresql Neon and Drizzle-kit with zod
 
 # Feature Task Master
 ### User
-1. Can user register
-2. Can user sign in with the Google
+1. Register
+2. Login
+3. Sign in with Google
 ### Task
-1. Can create task
-2. Can edit task
-3. Can delete task
+1. Create task
+2. Edit task
+3. Delete task
 
 # Installation
 
