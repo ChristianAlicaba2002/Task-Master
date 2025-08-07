@@ -8,6 +8,13 @@
       "when": 1754090984314,
       "tag": "0000_marvelous_the_fallen",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1754547827979,
+      "tag": "0001_equal_bastion",
+      "breakpoints": true
     }
   ]
 }
