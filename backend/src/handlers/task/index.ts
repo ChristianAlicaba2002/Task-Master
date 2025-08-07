@@ -13,7 +13,7 @@ import { eq } from "drizzle-orm";
 export const allTaskHandler = async (c: Context) => {
   try {
     const token = c.req.header("Authorization")?.split("Bearer ")[1];
-
+    
     if (!token) {
       return c.json(
         { message: "Unauthorized: Missing or malformed token" },
