@@ -1,12 +1,5 @@
 import { sql } from "drizzle-orm";
-import {
-  pgTable,
-  varchar,
-  timestamp,
-  integer,
-  text,
-  pgEnum,
-} from "drizzle-orm/pg-core";
+import { pgTable, varchar, timestamp, text, pgEnum } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
