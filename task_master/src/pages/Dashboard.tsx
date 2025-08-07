@@ -6,9 +6,8 @@ import { IoIosMore } from "react-icons/io";
 import '../../public/css/dashboard.css';
 import AddTask from "../components/AddTask";
 import EditTask from "../components/EditTask";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { ACCESS_TOKEN } from "../token/token";
 import type { TTask } from "../types/types";
 
 const statuses = ["To-Do", "In Progress", "Done"];
@@ -56,41 +55,50 @@ export default function Dashboard() {
   }, []);
 
   // Fetch tasks from API REQUEST
-  const displayTaskUser = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/tasks", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        }
-      });
+  useEffect(() => {
 
-      const data = await response.json();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
 
-      if (!response.ok) {
-        console.error("Error fetching tasks:", data.message || data.error);
+      if (!user) {
+        console.error("No user is currently logged in.");
         return;
       }
 
-      const taskObject = data?.data;
+      const ACCESS_TOKEN = await user.getIdToken();
 
-      if (Array.isArray(taskObject)) {
-        setTasks(() => [...taskObject]);
-        localStorage.setItem("item", JSON.stringify(taskObject));
-      } else {
-        console.error("Fetched task(s) are not valid:", taskObject);
+      try {
+        const response = await fetch("http://localhost:3000/tasks", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          console.error("Error fetching tasks:", data.message || data.error);
+          return;
+        }
+
+        const taskObject = data.data;
+
+        if (Array.isArray(taskObject)) {
+          setTasks(() => [...taskObject]);
+          localStorage.setItem("item", JSON.stringify(taskObject));
+        } else {
+          console.error("Fetched task(s) are not valid:", taskObject);
+          setTasks([]);
+        }
+      } catch (err) {
+        console.error("Fetch failed:", err);
         setTasks([]);
       }
-    } catch (err) {
-      console.error("Fetch failed:", err);
-      setTasks([]);
-    }
-  };
+    });
 
-  useEffect(() => {
-    displayTaskUser();
-  }, []);
-
+    return () => unsubscribe(); // clean up on unmount
+  }, [auth]);
 
   // Update the Task in the list of localstorage
   const updateTaskInList = (updatedTask: TTask) => {
@@ -106,8 +114,16 @@ export default function Dashboard() {
 
   // Delete Specific Tasks
   const deleteSpecificTask = async (id: string) => {
+    showCustomAlert()
     try {
-      showCustomAlert()
+      const currentUser = auth.currentUser;
+
+      if (!currentUser) {
+        console.error("No user is currently logged in.");
+        return;
+      }
+
+      const ACCESS_TOKEN = await currentUser.getIdToken();
 
       const response = await fetch(`http://localhost:3000/task/${id}`, {
         method: "DELETE",
@@ -190,7 +206,18 @@ export default function Dashboard() {
 
                       </div>
                       <label>{task.title}</label>
-                      <p>{task.description}</p>
+                      <div className="paragraph-container">
+                        <p>{task.description}</p>
+                      </div>
+                      <div className="created_at-container">
+                        <p className="full-date">{new Date(task.created_at).toLocaleString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}</p>
+                      </div>
                       <div className="priority-level">
                         <label
                           style={{
