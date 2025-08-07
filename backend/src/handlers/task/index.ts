@@ -1,10 +1,5 @@
 import { Context } from "hono";
-import {
-  taskInsertSchema,
-  tasks,
-  taskSelectSchema,
-  users,
-} from "../../db/schema";
+import { taskInsertSchema, tasks, users } from "../../db/schema";
 import { db } from "../../db";
 import * as http_status_code from "../../http-status/http-status-codes";
 import { eq } from "drizzle-orm";
@@ -13,7 +8,7 @@ import { eq } from "drizzle-orm";
 export const allTaskHandler = async (c: Context) => {
   try {
     const token = c.req.header("Authorization")?.split("Bearer ")[1];
-    
+
     if (!token) {
       return c.json(
         { message: "Unauthorized: Missing or malformed token" },
@@ -24,7 +19,7 @@ export const allTaskHandler = async (c: Context) => {
     const user = await db
       .select()
       .from(users)
-      .where(eq(users.token, token))
+      .where(eq(users.uId, token))
       .then((res) => res[0]);
 
     if (!user) {

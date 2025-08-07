@@ -64,7 +64,7 @@ export default function Dashboard() {
         return;
       }
 
-      const ACCESS_TOKEN = await user.getIdToken();
+      const ACCESS_TOKEN = user.uid;
 
       try {
         const response = await fetch("http://localhost:3000/tasks", {
@@ -97,9 +97,10 @@ export default function Dashboard() {
       }
     });
 
-    return () => unsubscribe(); // clean up on unmount
+    return () => unsubscribe();
   }, [auth]);
 
+  
   // Update the Task in the list of localstorage
   const updateTaskInList = (updatedTask: TTask) => {
     setTasks((prevTasks) =>
