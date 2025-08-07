@@ -42,6 +42,7 @@ export const allTaskHandler = async (c: Context) => {
         description: tasks.description,
         priority_level: tasks.priority_level,
         status: tasks.status,
+        created_at: tasks.created_at,
       })
       .from(tasks)
       .innerJoin(users, eq(tasks.user_id, users.uId))
@@ -127,7 +128,6 @@ export const getTaskHandler = async (c: Context) => {
   );
 };
 
-
 // Update User Specific Tasks Handler
 export const updateTaskHandler = async (c: Context) => {
   const id = c.req.param("id");
@@ -139,7 +139,7 @@ export const updateTaskHandler = async (c: Context) => {
     return c.json({ message: "Don't have a task" }, http_status_code.NOT_FOUND);
   }
 
-  const result = taskSelectSchema.safeParse(body);
+  const result = taskInsertSchema.safeParse(body);
 
   if (!result.success) {
     return c.json(
@@ -159,6 +159,7 @@ export const updateTaskHandler = async (c: Context) => {
       description: validateData.description,
       priority_level: validateData.priority_level,
       status: validateData.status,
+      updated_at: new Date(),
     })
     .where(eq(tasks.id, id));
 

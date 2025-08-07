@@ -6,7 +6,9 @@ CREATE TABLE "tasks" (
 	"title" varchar(255) NOT NULL,
 	"description" text NOT NULL,
 	"priority_level" "priority_level" NOT NULL,
-	"status" "status" NOT NULL
+	"status" "status" NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "users" (

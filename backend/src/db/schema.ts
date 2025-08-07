@@ -1,12 +1,5 @@
 import { sql } from "drizzle-orm";
-import {
-  pgTable,
-  varchar,
-  timestamp,
-  integer,
-  text,
-  pgEnum,
-} from "drizzle-orm/pg-core";
+import { pgTable, varchar, timestamp, text, pgEnum } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -52,6 +45,11 @@ export const tasks = pgTable("tasks", {
   description: text("description").notNull(),
   priority_level: priorityLevelEnum("priority_level").notNull(),
   status: statusEnum("status").notNull(),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+  updated_at: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => sql`NOW()`),
 });
 
 export const taskSelectSchema = createSelectSchema(tasks);

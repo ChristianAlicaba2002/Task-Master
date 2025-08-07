@@ -69,9 +69,12 @@ export default function AddTask() {
                     user_id: user.uid
                 };
 
+                const ACCESS_TOKEN = await user.getIdToken();
+
                 const response = await fetch("http://localhost:3000/tasks", {
                     method: "POST",
                     headers: {
+                        Authorization: `Bearer ${ACCESS_TOKEN}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(submitTask)
