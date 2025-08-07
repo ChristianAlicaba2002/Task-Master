@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom"
 import "../../public/css/login.css"
 import logo from "../assets/aclclogo.webp"
 import google from "../assets/Google.webp"
+import facebook from "../assets/facebook.webp"
 import { getIdToken, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth"
 import { FirebaseError } from "firebase/app"
 // @ts-expect-error this is for authentication
-import { auth, googleProvider } from "../firebase/firebase.config.js"
+import { auth, googleProvider, facebookProvider } from "../firebase/firebase.config.js"
 import type { TUserForm } from "../types/types.js"
 import { FaEyeSlash, FaEye } from "react-icons/fa6"
 import Register from "./Register.js"
@@ -71,7 +72,8 @@ export default function Login() {
 
             const user = userCredential.user
             if (user) {
-                const token = await getIdToken(user)
+                // const token = await getIdToken(user)
+                const token = user.uid
 
                 const submitUserCredentials = {
                     token: token,
@@ -126,11 +128,50 @@ export default function Login() {
             const user = userCredential.user
 
             if (user) {
-                const token = await getIdToken(user)
+                const userToken = await getIdToken(user)
+                const token = user.uid
 
                 const submitUserCredentials = {
                     uId: user.uid,
-                    token: token,
+                    token: userToken,
+                    username: user.displayName,
+                    email: user.email,
+                    password: ""
+                }
+
+                await fetch("http://localhost:3000/users", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(submitUserCredentials)
+                })
+
+                localStorage.setItem("token", token)
+                navigateTo("/dashboard")
+            }
+        } catch (error) {
+            console.error("Sign-in failed:", error)
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    // Handler Sign in with Facebook
+    const signInWithFacebook = async () => {
+        setIsSubmitting(true)
+        try {
+            const userCredential = await signInWithPopup(auth, facebookProvider)
+            const user = userCredential.user
+
+            if (user) {
+                console.log(user)
+                const userToken = await getIdToken(user)
+                const token = user.uid
+
+                const submitUserCredentials = {
+                    uId: user.uid,
+                    token: userToken,
                     username: user.displayName,
                     email: user.email,
                     password: ""
@@ -167,10 +208,16 @@ export default function Login() {
                 <h1>Log in to your account</h1>
                 <p>Cotinue to Task Master with:</p>
                 <div className="social-media-container">
-                    <button onClick={signInWithGoogle} className="button-container" type="button" title="Sign in with Google" disabled={isSubmitting}>
+                    <button onClick={signInWithGoogle} className="button-google-container" type="button" title="Sign in with Google" disabled={isSubmitting}>
                         <img src={google} alt="Google logo" />
                         <label>
                             Sign in with Google
+                        </label>
+                    </button>
+                    <button onClick={signInWithFacebook} className="button-facebook-container" type="button" title="Sign in with Facebook" disabled={isSubmitting}>
+                        <img src={facebook} alt="Facebbok logo" />
+                        <label>
+                            Sign in with Facebook
                         </label>
                     </button>
                 </div>
