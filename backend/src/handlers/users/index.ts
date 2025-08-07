@@ -43,6 +43,18 @@ export const createUserHandler = async (c: Context) => {
       password: hashedPassword,
     };
 
+    // Check if the User is already exist
+    const findUser = await db
+      .select({ email: users.email })
+      .from(users)
+      .where(eq(users.email, validatedData.email));
+
+    if (findUser) {
+      // Update the User existing token
+      await db
+        .update(users)
+        .set({ token: validatedData.token, updated_at: new Date() });
+    }
     // Insert into DB
     const [createdUser] = await db
       .insert(users)
@@ -86,7 +98,7 @@ export const getUserTokenHandler = async (c: Context) => {
 
     const updateResult = await db
       .update(users)
-      .set({ token, updated_at: new Date() })
+      .set({ token: token, updated_at: new Date() })
       .where(eq(users.email, email))
       .returning();
 
