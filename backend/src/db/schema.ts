@@ -52,6 +52,11 @@ export const tasks = pgTable("tasks", {
   description: text("description").notNull(),
   priority_level: priorityLevelEnum("priority_level").notNull(),
   status: statusEnum("status").notNull(),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+  updated_at: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => sql`NOW()`),
 });
 
 export const taskSelectSchema = createSelectSchema(tasks);
