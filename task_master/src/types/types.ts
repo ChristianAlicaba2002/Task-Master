@@ -15,6 +15,7 @@ export type TTask = {
   description: string;
   priority_level: string;
   status: string;
+  created_at: string;
 };
 
 export type TAddTask = {
