@@ -12,6 +12,14 @@ API: RESTful
 
 Database: Postgresql Neon and Drizzle-kit with zod
 
+# Feature Task Master
+### User
+1. Can user register
+2. Can user sign in with the Google
+### Task
+1. Can create task
+2. Can edit task
+3. Can delete task
 
 # Installation
 
