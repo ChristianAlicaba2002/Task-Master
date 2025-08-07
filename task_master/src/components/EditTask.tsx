@@ -34,8 +34,6 @@ export default function EditTask({ item_id, onTaskUpdate }: TID) {
             try {
                 const response = await fetch(`http://localhost:3000/task/${item_id}`);
                 const data = await response.json();
-                console.log("Fetched Task:", data);
-
 
                 if (data.data && Array.isArray(data.data) && data.data.length > 0) {
                     const task: TTask = data.data[0];
@@ -70,37 +68,49 @@ export default function EditTask({ item_id, onTaskUpdate }: TID) {
         setSubmitTask(true);
 
         const user = auth.currentUser;
+
         if (!user) {
-            alert("You must be logged in to update a task.");
+            console.error("No user is currently logged in.");
             setSubmitTask(false);
             return;
         }
 
-        const updatedTask: TTask = {
-            id: item_id,
-            user_id: user.uid,
-            ...editTaskForm,
-        };
-
         try {
+            const ACCESS_TOKEN = await user.getIdToken();
+
+            const updatedTask = {
+                id: item_id,
+                user_id: user.uid,
+                title: editTaskForm.title,
+                description: editTaskForm.description,
+                priority_level: editTaskForm.priority_level,
+                status: editTaskForm.status,
+            };
+
+            console.log(updatedTask)
+
             const response = await fetch(`http://localhost:3000/task/${item_id}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${ACCESS_TOKEN}`,
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(updatedTask),
             });
 
             if (!response.ok) throw new Error("Failed to update task");
+            const data = await response.json()
+            if (data) {
+                console.log(data)
+            }
 
-            onTaskUpdate(updatedTask);
-
+            onTaskUpdate({ ...updatedTask, created_at: new Date().toISOString() });
             setIsEditOpen(false);
         } catch (error) {
-            console.error(error);
+            console.error("Update error:", error);
             alert("Failed to update task.");
         } finally {
-            setSubmitTask(false)
+            setSubmitTask(false);
         }
     };
 
