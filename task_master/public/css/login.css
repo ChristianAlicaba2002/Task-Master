@@ -23,10 +23,10 @@
   color: white;
 }
 .hero-container p {
-  color: rgba(255, 255, 255, 0.735);
+  color: rgba(255, 255, 255, 0.62);
   margin: -0.2rem 0 0 0;
   width: 45%;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 .login-form-container {
   position: absolute;

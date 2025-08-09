@@ -15,6 +15,7 @@ const statuses = ["To-Do", "In Progress", "Done"];
 export default function Dashboard() {
   const auth = getAuth();
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [isLoading , setIsLoading] = useState<boolean>(false);
   const [isAddTaskOpen, setIsTaskOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
@@ -22,7 +23,7 @@ export default function Dashboard() {
   const [name, setName] = useState<string | null>(null);
   const [tasks, setTasks] = useState<TTask[]>([]);
 
-  // Set user name from Firebase Auth
+  // Set username from Firebase Auth
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
@@ -30,12 +31,14 @@ export default function Dashboard() {
     }
   }, [auth]);
 
+  // Show Alert Actions
   function showCustomAlert() {
     setShowAlert(true);
     setTimeout(() => {
       setShowAlert(false);
     }, 3000);
   }
+
   // Load tasks from localStorage
   useEffect(() => {
     try {
@@ -52,10 +55,12 @@ export default function Dashboard() {
       console.error("Failed to parse localStorage item:", e);
       setTasks([]);
     }
+
   }, []);
 
   // Fetch tasks from API REQUEST
   useEffect(() => {
+    setIsLoading(true);
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
 
@@ -94,13 +99,14 @@ export default function Dashboard() {
       } catch (err) {
         console.error("Fetch failed:", err);
         setTasks([]);
+      }finally {
+        setIsLoading(false);
       }
     });
 
     return () => unsubscribe();
   }, [auth]);
 
-  
   // Update the Task in the list of localstorage
   const updateTaskInList = (updatedTask: TTask) => {
     setTasks((prevTasks) =>
@@ -184,64 +190,70 @@ export default function Dashboard() {
               </h2>
               <div className="task-list">
                 <>
-                  {tasks.filter((task) => task.status === status).map((task) => (
-                    <div key={task.id ?? task.user_id ?? Math.random()} className="task-card">
-                      <div className="more-container">
-                        <IoIosMore className="more-icon" onClick={() => setIsMenuOpen((prev) => !prev)} />
-                        {isMenuOpen && (
-                          <>
-                            <div className="action-container">
-                              <CiEdit
-                                className="edit-icon"
-                                onClick={() => {
-                                  setEditTaskId(task.id);
-                                  setIsEditOpen((prev) => !prev);
-                                }}
-                              />
-                              <div className="delete-icon">
-                                <FaTrash onClick={() => deleteSpecificTask(task.id)} />
-                              </div>
+                  {isLoading ?  <div className="task-loader-container">
+                    <div className="loader"></div>
+                  </div> :
+                      <>
+                        {tasks.filter((task) => task.status === status).map((task) => (
+                            <div key={task.id ?? task.user_id ?? Math.random()} className="task-card">
+                              <>
+                                <div className="more-container">
+                                  <IoIosMore className="more-icon" onClick={() => setIsMenuOpen((prev) => !prev)} />
+                                  {isMenuOpen && (
+                                      <>
+                                        <div className="action-container">
+                                          <CiEdit
+                                              className="edit-icon"
+                                              onClick={() => {
+                                                setEditTaskId(task.id);
+                                                setIsEditOpen((prev) => !prev);
+                                              }}
+                                          />
+                                          <div className="delete-icon">
+                                            <FaTrash onClick={() => deleteSpecificTask(task.id)} />
+                                          </div>
+                                        </div>
+                                      </>
+                                  )}
+
+                                </div>
+                                <label>{task.title}</label>
+                                <div className="paragraph-container">
+                                  <p>{task.description}</p>
+                                </div>
+                                <div className="created_at-container">
+                                  <p className="full-date">{new Date(task.created_at).toLocaleString("en-US", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}</p>
+                                </div>
+                                <div className="priority-level">
+                                  <label
+                                      style={{
+                                        backgroundColor:
+                                            task.priority_level === "Low"
+                                                ? "gray"
+                                                : task.priority_level === "Medium"
+                                                    ? "goldenrod"
+                                                    : "crimson",
+                                        fontWeight: "bold",
+                                      }}
+                                  >
+                                    {task.priority_level}
+                                  </label>
+                                </div>
+                              </>
                             </div>
-                          </>
+                        ))}
+                        {tasks.filter((task) => task.status === status).length === 0 && (
+                            <p className="no-tasks">No tasks</p>
                         )}
-
-                      </div>
-                      <label>{task.title}</label>
-                      <div className="paragraph-container">
-                        <p>{task.description}</p>
-                      </div>
-                      <div className="created_at-container">
-                        <p className="full-date">{new Date(task.created_at).toLocaleString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}</p>
-                      </div>
-                      <div className="priority-level">
-                        <label
-                          style={{
-                            backgroundColor:
-                              task.priority_level === "Low"
-                                ? "gray"
-                                : task.priority_level === "Medium"
-                                  ? "goldenrod"
-                                  : "crimson",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {task.priority_level}
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-
+                      </>
+                  }
                 </>
-
-                {tasks.filter((task) => task.status === status).length === 0 && (
-                  <p className="no-tasks">No tasks</p>
-                )}
               </div>
             </div>
           ))}

@@ -165,7 +165,6 @@ export default function Login() {
             const user = userCredential.user
 
             if (user) {
-                console.log(user)
                 const userToken = await getIdToken(user)
                 const token = user.uid
 
@@ -202,7 +201,10 @@ export default function Login() {
             </div>
             <div className="hero-container">
                 <h1>Task Master</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur quo deleniti repellendus dolores exercitationem distinctio!</p>
+                <p>
+                    Your Personal Productivity Partner!
+                    Stay organized, focused, and in control of your day with Task Master. Whether you’re managing work projects, personal goals, or everyday errands, Task Master helps you create, track, and complete tasks with ease.
+                </p>
             </div>
             <div className="login-form-container">
                 <h1>Log in to your account</h1>
