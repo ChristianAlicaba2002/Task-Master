@@ -263,8 +263,9 @@ export default function Login() {
                             ? <FaEye className="eye-password" onClick={() => setIsShowPassword((prev) => !prev)} />
                             : <FaEyeSlash className="eye-password" onClick={() => setIsShowPassword((prev) => !prev)} />
                         }
+
                         {passwordError && (
-                            <p className="error-message" style={{ color: 'red', fontSize: '0.9rem', marginTop: '1rem', marginLeft: '-18rem' }}>
+                            <p className="error-message" style={{ color: 'red', fontSize: '0.9rem', marginTop: '0.3rem', marginLeft: '-18rem' }}>
                                 {passwordError}
                             </p>
                         )}
