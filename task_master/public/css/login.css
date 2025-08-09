@@ -71,7 +71,9 @@
   color: white;
 }
 .form-input input[type="email"],
+.form-input input[type="text"],
 .form-input input[type="password"] {
+  position: relative;
   padding: 1.1rem;
   width: 25rem;
   margin: 1.5rem 0 0 0;
@@ -104,13 +106,19 @@ input:-webkit-autofill {
   -webkit-text-fill-color: inherit !important;
 }
 
+.show-password-container{
+  background-color: red;
+}
+
 .eye-password {
   width: 3rem;
-  padding: 0.5rem;
-  margin: -3rem 0 0 24rem;
+  padding: 0.2rem;
+  margin: 2rem 0 0 23rem;
   font-size: 1.3rem;
   color: rgba(255, 255, 255, 0.341);
+  position: absolute;
 }
+
 .submit-container {
   width: 100%;
   display: flex;
