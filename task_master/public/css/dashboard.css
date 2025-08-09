@@ -231,3 +231,19 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+.task-loader-container {
+  height: 50vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.loader {
+  width: 15px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid rgb(173, 216, 230);
+  border-right-color: rgb(0, 13, 255);
+  animation: l2 1s infinite linear;
+}
